@@ -1,0 +1,135 @@
+{
+  "$comment": "Fonte de verdade de comandos. Preenchido por /atlas-init. null = etapa pulada (e reportada como SKIPPED). Edite à vontade.",
+  "project": {
+    "name": "",
+    "description": ""
+  },
+  "stack": {
+    "backend": null,
+    "frontend": null,
+    "database": null,
+    "package_manager": null,
+    "detected_at": null
+  },
+  "paths": {
+    "backend": [],
+    "frontend": [],
+    "database": [],
+    "shared": [],
+    "docs": [
+      "README.md",
+      "docs",
+      "CHANGELOG.md",
+      ".env.example"
+    ]
+  },
+  "branches": {
+    "main": "main",
+    "develop": "develop"
+  },
+  "commands": {
+    "install": null,
+    "dev": null,
+    "build": null,
+    "lint": null,
+    "format": null,
+    "format_file": null,
+    "typecheck": null,
+    "test": null,
+    "test_coverage": null,
+    "e2e": null,
+    "migrate": null,
+    "migrate_check": null,
+    "security": {
+      "deps_audit": null,
+      "sast": "semgrep --config auto --error --quiet .",
+      "secrets": "gitleaks detect --no-banner --redact"
+    },
+    "seed": null,
+    "load_test": null,
+    "api_spec": null,
+    "api_spec_check": null,
+    "db_backup": null
+  },
+  "quality": {
+    "coverage_min": 70,
+    "max_review_cycles": 3,
+    "budgets": {
+      "lighthouse_perf_min": 70,
+      "lighthouse_a11y_min": 90,
+      "lighthouse_best_practices_min": 80,
+      "api_p95_ms": 300
+    },
+    "visual_regression": true
+  },
+  "release": {
+    "tag_prefix": "v",
+    "changelog": "CHANGELOG.md",
+    "version_files": []
+  },
+  "autonomy": {
+    "$comment": "full = Atlas executa tudo (issue, commits, PR, merge, release) e só volta com o relatório. confirm = pede OK antes de cada merge.",
+    "mode": "full",
+    "always_ask_when": [
+      "requisito ambíguo que muda o resultado",
+      "decisão com impacto em dinheiro, autenticação, exclusão de dados ou custo recorrente",
+      "security BLOCK não resolvido após max_review_cycles",
+      "gate de release com etapa SKIPPED por ferramenta ausente"
+    ]
+  },
+  "dev": {
+    "$comment": "Ambiente local. Atlas sobe isso ao fim de toda feature e devolve a URL no relatório.",
+    "command": null,
+    "url": "http://localhost:3000",
+    "health_path": "/",
+    "services_up": null,
+    "ready_timeout_s": 90,
+    "seed_on_start": true
+  },
+  "design": {
+    "$comment": "mode: spec = agente designer escreve spec + wireframe HTML e o frontend implementa (sem interromper). claude-design = idem, mas o Atlas também gera um brief em design/briefs/ para você refinar no Claude Design e depois aplicar o handoff com /design apply N.",
+    "mode": "claude-design",
+    "system_file": "design/DESIGN_SYSTEM.md",
+    "tokens_in_code": []
+  },
+  "parallelism": {
+    "$comment": "Atlas paraleliza por padrão. max_parallel = subagentes implementando ao mesmo tempo.",
+    "max_parallel": 4,
+    "contract_first": true
+  },
+  "deploy": {
+    "$comment": "Preenchido por /atlas-init ou /deploy setup. provider: vercel|netlify|railway|fly|render|docker|custom|null.",
+    "provider": null,
+    "preview_per_pr": true,
+    "auto_prod_after_release": false,
+    "run_migrations": false,
+    "commands": {
+      "preview": null,
+      "staging": null,
+      "prod": null,
+      "rollback": null
+    },
+    "url": {
+      "staging": null,
+      "prod": null
+    },
+    "health_path": "/",
+    "required_env": []
+  },
+  "notify": {
+    "$comment": "Canais: ntfy (mais simples: app ntfy no celular + NTFY_TOPIC), telegram, slack, desktop. Segredos em ~/.atlas/notify.env, fora do repo.",
+    "channels": [
+      "desktop"
+    ],
+    "on": [
+      "delivery",
+      "release",
+      "blocked",
+      "needs_input"
+    ]
+  },
+  "metrics": {
+    "enabled": true,
+    "file": ".atlas/metrics.jsonl"
+  }
+}

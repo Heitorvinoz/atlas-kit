@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.claude/agent-memory-local/
+.claude/settings.local.json
+node_modules/
+__pycache__/
+.venv/
+dist/
+build/
+coverage/
+
+.atlas/
