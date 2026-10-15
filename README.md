@@ -312,6 +312,22 @@ Teste: `bash .claude/scripts/notify.sh "Atlas" "funcionando"`.
 - **`/maintain`**: atualiza dependências minor/patch com a suíte verde, auditoria, código morto, testes frágeis (roda a suíte 3x),
   docs vivas; PR do que é seguro, issues `chore` priorizadas do resto.
 
+## 14b. Memória: por que você nunca precisa "apagar" o Atlas
+O contexto de uma sessão enche e o Claude Code compacta (ou você abre outra sessão). O Atlas é desenhado para isso não custar nada:
+- **Memória por agente** (`.claude/agent-memory/<nome>/MEMORY.md`, versionada): o que vale entre features — estrutura, convenções, armadilhas.
+- **Estado do trabalho** (`.atlas/STATE.md`): a cada etapa do pipeline o Atlas grava onde está. O hook `PreCompact` o obriga a salvar
+  antes de compactar; o hook `SessionStart` injeta o estado e o último relatório ao abrir/retomar/compactar. Ele retoma de onde parou.
+- **Tudo o mais está no repositório**: issues, PRs, ADRs, CHANGELOG, threat models, retros, métricas. A conversa é descartável.
+- **Memória de conversa** (`claude-mem`, ligada por padrão; `/atlas-init` instala): grava o teor das sessões e o Atlas consulta ao abrir
+  a sessão, quando você cita algo antigo, ao iniciar uma feature e na retro. Feita para quem **pensa com o Atlas**: ideias meio prontas,
+  preferências, rejeições ("não quero modo escuro") voltam quando importam.
+- **Ideias estacionadas** (`docs/IDEAS.md`, versionado): tudo que você mencionou e não virou issue, com status (estacionada / descartada
+  com motivo / virou #N). Mesmo se o claude-mem cair, as ideias ficam. `/status` mostra as recentes; `/retro` cobra as antigas.
+Papéis: claude-mem = o que foi dito · IDEAS.md = o que foi estacionado · MEMORY.md = como o projeto funciona · STATE.md = onde o trabalho
+parou · ADRs = o que foi decidido. Em conflito, código e ADRs mandam. Para desligar o claude-mem: `memory.conversational: null`.
+Dicas: `claude --continue` retoma a última sessão; `/compact` compacta na hora que você escolher (ex.: entre features);
+`/rewind` volta a um ponto anterior.
+
 ## 15. Hooks e permissões: o que é bloqueado
 
 `.claude/settings.json` define `defaultMode: acceptEdits`, uma lista de comandos liberados (git, gh, gerenciadores de pacote,
@@ -339,7 +355,7 @@ Branches → require PR em `main` e `develop`.
   agents/                  atlas, database, backend, frontend, designer, security, qa, reviewer, docs, deploy, scout
   skills/                  atlas-init, feature, release, hotfix, adr, status, design, deploy, explain, retro, maintain, design-system
   hooks/                   guard-git.sh, post-edit.sh
-  scripts/                 dev-up.sh, env-check.sh, screenshot.sh, audit-web.sh, metrics.sh, notify.sh
+  scripts/                 dev-up.sh, env-check.sh, screenshot.sh, audit-web.sh, metrics.sh, notify.sh, session-state.sh
   agent-memory/            memória de cada agente (versionada)
 CLAUDE.md                  regras lidas por todos os agentes
 atlas.config.json          fonte de verdade de comandos e comportamento
@@ -348,6 +364,7 @@ docs/
   CONVENTIONS.md           branches, commits, PRs, versionamento
   ARCHITECTURE.md          mapa do sistema (mantido pelo docs)
   adr/                     decisões (template + índice)
+  IDEAS.md                 ideias estacionadas (o que você falou e ainda não pediu)
   api/                     OpenAPI
   security/threat-models/  STRIDE por feature
   retros/                  retrospectivas

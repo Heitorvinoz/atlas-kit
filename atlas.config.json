@@ -131,5 +131,14 @@
   "metrics": {
     "enabled": true,
     "file": ".atlas/metrics.jsonl"
+  },
+  "memory": {
+    "$comment": "conversational: claude-mem (padrão) | null. Memória de CONVERSA (ideias, discussões). A memória de PROJETO (MEMORY.md dos agentes), o ESTADO (.atlas/STATE.md) e o estacionamento de ideias (docs/IDEAS.md) existem sempre.",
+    "conversational": "claude-mem",
+    "recall_on": [
+      "o usuário se refere a algo dito em sessão anterior",
+      "início de /feature, para checar ideias relacionadas já discutidas",
+      "/retro"
+    ]
   }
 }

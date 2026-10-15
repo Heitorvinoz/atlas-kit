@@ -1,0 +1,209 @@
+{
+  "agent": "atlas",
+  "env": {
+    "CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH": "2"
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Edit",
+      "Write",
+      "TodoWrite",
+      "Skill",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git checkout*)",
+      "Bash(git switch*)",
+      "Bash(git pull*)",
+      "Bash(git fetch*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git push origin feat/*)",
+      "Bash(git push origin fix/*)",
+      "Bash(git push origin chore/*)",
+      "Bash(git push origin hotfix/*)",
+      "Bash(git push origin release/*)",
+      "Bash(git push -u origin feat/*)",
+      "Bash(git push -u origin fix/*)",
+      "Bash(git push -u origin hotfix/*)",
+      "Bash(git push -u origin release/*)",
+      "Bash(git push origin v*)",
+      "Bash(git tag*)",
+      "Bash(git describe*)",
+      "Bash(git stash*)",
+      "Bash(git merge*)",
+      "Bash(git worktree*)",
+      "Bash(git rev-parse*)",
+      "Bash(gh issue*)",
+      "Bash(gh pr create*)",
+      "Bash(gh pr list*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr checks*)",
+      "Bash(gh label*)",
+      "Bash(gh release list*)",
+      "Bash(gh release view*)",
+      "Bash(gh auth status*)",
+      "Bash(gh repo view*)",
+      "Bash(which *)",
+      "Bash(ls*)",
+      "Bash(cat *)",
+      "Bash(mkdir*)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(pnpm *)",
+      "Bash(bun *)",
+      "Bash(yarn *)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(pytest*)",
+      "Bash(uv *)",
+      "Bash(ruff *)",
+      "Bash(mypy *)",
+      "Bash(pip-audit*)",
+      "Bash(go *)",
+      "Bash(golangci-lint *)",
+      "Bash(govulncheck *)",
+      "Bash(cargo *)",
+      "Bash(mvn *)",
+      "Bash(gradle*)",
+      "Bash(dotnet *)",
+      "Bash(bundle *)",
+      "Bash(composer *)",
+      "Bash(php *)",
+      "Bash(gitleaks *)",
+      "Bash(semgrep *)",
+      "Bash(docker compose *)",
+      "Bash(gh pr merge*)",
+      "Bash(gh release create*)",
+      "Bash(gh pr comment*)",
+      "Bash(gh pr edit*)",
+      "Bash(gh issue comment*)",
+      "Bash(git push -u origin chore/*)",
+      "Bash(git push -u origin refactor/*)",
+      "Bash(git push origin refactor/*)",
+      "Bash(git branch -d*)",
+      "Bash(bash .claude/scripts/*)",
+      "Bash(curl *)",
+      "Bash(nohup *)",
+      "Bash(kill *)",
+      "Bash(tail *)",
+      "Bash(vercel *)",
+      "Bash(netlify *)",
+      "Bash(railway *)",
+      "Bash(fly *)",
+      "Bash(flyctl *)",
+      "Bash(render *)",
+      "Bash(npx playwright *)",
+      "Bash(npx -y playwright *)",
+      "Bash(npx @axe-core/cli *)",
+      "Bash(npx -y @axe-core/cli *)",
+      "Bash(npx lighthouse *)",
+      "Bash(npx -y lighthouse *)",
+      "Bash(k6 *)",
+      "Bash(npx autocannon *)",
+      "mcp__playwright__*",
+      "Bash(bash .claude/scripts/session-state.sh *)"
+    ],
+    "ask": [
+      "Bash(git reset*)",
+      "Bash(git rebase*)",
+      "Bash(rm -rf*)",
+      "Bash(docker *)",
+      "Bash(gh api*)",
+      "Bash(vercel --prod*)",
+      "Bash(railway up --environment production*)",
+      "Bash(fly deploy --app *prod*)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push origin main*)",
+      "Bash(git push origin develop*)",
+      "Bash(git push origin +*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/id_rsa*)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-git.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-edit.sh"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/scripts/metrics.sh hook"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/scripts/metrics.sh hook"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/scripts/notify.sh \"Atlas precisa de você\" \"O Claude Code está aguardando sua resposta.\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/scripts/session-state.sh inject"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/scripts/session-state.sh precompact"
+          }
+        ]
+      }
+    ]
+  }
+}

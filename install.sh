@@ -13,7 +13,7 @@ copy() { # copy <origem relativa> ; não sobrescreve arquivo existente
 copy .claude/agents; copy .claude/skills; copy .claude/hooks; copy .claude/scripts; copy .claude/settings.json
 copy design; copy docs/security; copy docs/retros; copy docs/api
 copy CLAUDE.md; copy atlas.config.json; copy CHANGELOG.md; copy .env.example
-copy docs/CONVENTIONS.md; copy docs/ARCHITECTURE.md; copy docs/adr
+copy docs/CONVENTIONS.md; copy docs/IDEAS.md; copy docs/ARCHITECTURE.md; copy docs/adr
 copy .github/ISSUE_TEMPLATE; copy .github/pull_request_template.md
 if [ -e "$TARGET/.gitignore" ]; then
   grep -q 'agent-memory-local' "$TARGET/.gitignore" || cat "$KIT/.gitignore" >> "$TARGET/.gitignore"
