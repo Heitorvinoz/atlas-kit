@@ -7,6 +7,7 @@
 | `mockups/<issue>-<slug>.html` | wireframe navegável, abre no browser | `designer` |
 | `briefs/<issue>-<slug>.md` | brief pronto para colar no Claude Design | `designer` |
 | `handoffs/<issue>/` | handoff bundle exportado do Claude Design para o Claude Code | você |
+| `handoffs/initial/` | design feito ANTES do código; `/design import` vira design system + roadmap de features | você |
 
 Fluxo com Claude Design: `/feature` gera spec + mockup + brief sem te interromper → você refina no Claude Design
 quando quiser → exporta o bundle em `handoffs/<issue>/` → `/design apply <issue>` → o frontend ajusta → localhost.

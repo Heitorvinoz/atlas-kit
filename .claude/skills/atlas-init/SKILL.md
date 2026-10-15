@@ -24,7 +24,9 @@ Se gitleaks/semgrep não estiverem instalados, mantenha os comandos no config e 
 - Preencha `dev.command` (ex.: `npm run dev`, `uv run uvicorn app:app --reload`, `go run ./cmd/server`), `dev.url`,
   `dev.health_path` (uma rota que responde 200 rapidamente) e `dev.services_up` (ex.: `docker compose up -d`) se houver.
   Teste: `bash .claude/scripts/dev-up.sh` deve terminar em "DEV: pronto". Depois `bash .claude/scripts/env-check.sh`.
-- Se houver frontend: delegue ao `designer` a tarefa `system` para extrair `design/DESIGN_SYSTEM.md` do código e preencha
+- Se existir `design/handoffs/initial/` (o usuário desenhou no Claude Design antes do código): delegue ao `designer` a extração do
+  design system a partir do bundle, e no relatório final diga que o próximo passo é `/design import`.
+- Senão, se houver frontend: delegue ao `designer` a tarefa `system` para extrair `design/DESIGN_SYSTEM.md` do código e preencha
   `design.tokens_in_code`. Sem frontend ainda: deixe o template e avise que `/design system` monta quando a UI nascer.
 - Pergunte (uma vez) se o usuário vai usar o Claude Design; se não, mude `design.mode` para `spec`.
 - Preencha `commands.seed` (seed de demonstração) e, se houver API, `commands.api_spec`/`api_spec_check` (presets em `presets.md`).

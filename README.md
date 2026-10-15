@@ -276,6 +276,11 @@ Para polir no [Claude Design](https://claude.com/product/design):
 4. `/design apply <issue>` (ou "aplica o design"): o `designer` converte o bundle em diff de spec, o `frontend` aplica,
    `qa` + `reviewer` validam, `docs` atualiza o design system se surgiu token/componente, merge, localhost.
 
+**Design primeiro, código depois**: dá para desenhar o app inteiro no Claude Design antes de existir qualquer código. Exporte o
+handoff bundle para `design/handoffs/initial/`, rode `/atlas-init` (o design não define a stack) e depois `/design import`:
+o `designer` extrai o design system e um inventário de telas, e o Atlas transforma as telas em um roadmap de issues pequenas,
+ordenadas, e começa pela primeira. Cada feature seguinte usa as telas do bundle como referência obrigatória.
+
 Não vai usar o Claude Design? `design.mode: "spec"` pula o brief.
 
 ## 12. Notificações
